@@ -56,8 +56,8 @@
 
 HX711 scale(DOUT, CLK);
 
-float calibration_factor = 24400.00; //-7050 worked for my 440lb max scale setup
-float zero_factor = 8720102.00;
+float calibration_factor = 24480.00; //-7050 worked for my 440lb max scale setup
+float zero_factor = 8732445.00;
 
 void setup() {
   Serial.begin(9600);
@@ -85,12 +85,11 @@ void findZeroPoint(){
 }
 
 void findCalibrationFactor(){
-  scale.power_up();
-  delay(100);
+
   scale.set_scale(calibration_factor); //Adjust to this calibration factor
 
   Serial.print("Reading: ");
-  Serial.print(scale.get_units(10), 2);
+  Serial.print(scale.get_units(5), 3);
   Serial.print(" Kg"); //Change this to kg and re-adjust the calibration factor if you follow SI units like a sane person
   Serial.print(" calibration_factor: ");
   Serial.print(calibration_factor);
@@ -104,15 +103,14 @@ void findCalibrationFactor(){
     else if(temp == '-' || temp == 'z')
       calibration_factor -= 10;
   }
-  scale.power_down();
-  delay(10000);
+
 }
 
 void testCalibration(){
   
   scale.set_scale(calibration_factor); //Adjust to this calibration factor
   Serial.print("Reading: ");
-  Serial.print(scale.get_units(10), 2);
+  Serial.print(scale.get_units(10), 3);
   Serial.print(" Kg"); //Change this to kg and re-adjust the calibration factor if you follow SI units like a sane person
   Serial.print(" calibration_factor: ");
   Serial.print(calibration_factor);
@@ -129,7 +127,7 @@ void loop() {
 // uncomment one function below
 
 //findZeroPoint();
-findCalibrationFactor();
-//testCalibration();
+//findCalibrationFactor();
+testCalibration();
 
 }
